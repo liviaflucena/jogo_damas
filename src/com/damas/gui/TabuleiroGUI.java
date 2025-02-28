@@ -2,26 +2,16 @@ package com.damas.gui;
 
 import java.awt.Color;
 import javax.swing.JPanel;
-
 import com.damas.objetos.Casa;
-import com.damas.objetos.Dama;
 import com.damas.objetos.Jogo;
-import com.damas.objetos.Pedra;
-import com.damas.objetos.Tabuleiro;
+import com.damas.objetos.Peca;
 
 /**
- * Interface Grafica do Tabuleiro do jogo.
- * 
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
+ * Interface gráfica do tabuleiro.
  */
 public class TabuleiroGUI extends JPanel {
-
-    private JanelaPrincipal janela;
     private CasaGUI[][] casas;
-
-    public TabuleiroGUI() {
-    }
+    private JanelaPrincipal janela;
 
     public TabuleiroGUI(JanelaPrincipal janela) {
         this.janela = janela;
@@ -29,78 +19,28 @@ public class TabuleiroGUI extends JPanel {
         criarCasas();
     }
 
-    /**
-     * Preenche o tabuleiro com 64 casas
-     */
     private void criarCasas() {
         casas = new CasaGUI[8][8];
-        // De cima para baixo
         for (int y = 7; y >= 0; y--) {
-            // Da esquerda para a direita
             for (int x = 0; x < 8; x++) {
-                Color cor = calcularCor(x, y);
-                CasaGUI casa = new CasaGUI(x, y, cor, this);
-                casas[x][y] = casa;
-                add(casa);
+                Color cor = ((x + y) % 2 == 0) ? CasaGUI.COR_CLARA : CasaGUI.COR_ESCURA;
+                casas[x][y] = new CasaGUI(x, y, cor, this);
+                add(casas[x][y]);
             }
         }
-    }
-
-    private Color calcularCor(int x, int y) {
-        // linha par
-        if (x % 2 == 0) {
-            // coluna �mpar
-            if (y % 2 == 0) {
-                return CasaGUI.COR_ESCURA;
-            }
-            // coluna impar
-            else {
-                return CasaGUI.COR_CLARA;
-            }
-        }
-        // linha �mpar
-        else {
-            // coluna par
-            if (y % 2 == 0) {
-                return CasaGUI.COR_CLARA;
-            }
-            // coluna �mpar
-            else {
-                return CasaGUI.COR_ESCURA;
-            }
-        }
-
-        // codigo acima em uma linha
-        // return (i%2 + j%2)%2 == 0 ? CasaGUI.COR_ESCURA : CasaGUI.COR_CLARA;
     }
 
     public void atualizar(Jogo jogo) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 CasaGUI casaGUI = casas[x][y];
-                
-                Tabuleiro tabuleiro = jogo.getTabuleiro();
-                Casa casa = tabuleiro.getCasa(x, y);
-                if (casa.possuiPeca()) {
-                    Pedra peca = casa.getPeca();
+                Casa casa = jogo.getTabuleiro().getCasa(x, y);
 
-                    switch (peca.getTipo()) {
-                        case Pedra.PEDRA_BRANCA:
-                            casaGUI.desenharPedraBranca();
-                            break;
-                        case Dama.DAMA_BRANCA:
-                            casaGUI.desenharDamaBranca();
-                            break;
-                        case Pedra.PEDRA_VERMELHA:
-                            casaGUI.desenharPedraVermelha();
-                            break;
-                        case Dama.DAMA_VERMELHA:
-                            casaGUI.desenharDamaVermelha();
-                            break;
-                    }
-                }
-                else {
-                    casaGUI.apagarPeca();
+                if (casa.possuiPeca()) {
+                    Peca peca = casa.getPeca();
+                    casaGUI.setText(peca.getCor() == com.damas.objetos.CorPeca.BRANCA ? "B" : "V");
+                } else {
+                    casaGUI.setText("");
                 }
             }
         }

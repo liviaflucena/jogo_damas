@@ -2,48 +2,46 @@ package com.damas.objetos;
 
 /**
  * Representa uma Casa do tabuleiro.
- * Possui uma posição (x, y) e pode conter uma Peça.
+ * Possui uma posi�ao (i,j) e pode conter uma Pe�a.
+ * 
+ * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
+ * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
  */
 public class Casa {
 
-    private final int x;
-    private final int y;
-    private Peca peca;
+    private int x;
+    private int y;
+    private Pedra peca;
 
     public Casa(int x, int y) {
         this.x = x;
         this.y = y;
         this.peca = null;
     }
-
+    
     /**
-     * Coloca uma peça nesta casa.
-     * @param peca a Peça a ser posicionada nesta Casa.
-     * @throws IllegalStateException se a casa já contiver uma peça.
+     * @param peca a Pe�ça a ser posicionada nesta Casa.
      */
-    public void colocarPeca(Peca peca) {
-        if (this.peca != null) {
-            throw new IllegalStateException("A casa já contém uma peça.");
-        }
+    public void colocarPeca(Pedra peca) {
         this.peca = peca;
     }
 
     /**
-     * Remove a peça posicionada nesta casa, se houver.
+     * Remove a peca posicionada nesta casa, se houver.
      */
     public void removerPeca() {
         peca = null;
     }
-
+    
     /**
-     * @return a Peça posicionada nesta Casa, ou null se a casa estiver livre.
+     * @return a Peca posicionada nesta Casa, ou Null se a casa estiver livre.
      */
-    public Peca getPeca() {
+    public Pedra getPeca() {
         return peca;
     }
-
+    
     /**
-     * @return true se existe uma peça nesta casa, caso contrário false.
+     * @return true se existe uma peça nesta casa, caso contrario false.
      */
     public boolean possuiPeca() {
         return peca != null;
@@ -55,10 +53,5 @@ public class Casa {
 
     public int getY() {
         return y;
-    }
-
-    @Override
-    public String toString() {
-        return "Casa (" + x + ", " + y + ")";
     }
 }
